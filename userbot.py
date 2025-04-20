@@ -3,9 +3,9 @@ from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, Messa
 
 # Define your button labels and their corresponding links
 LINKS = {
-    "Google": "https://google.com",
-    "GitHub": "https://github.com",
-    "YouTube": "https://youtube.com"
+    "@veggie_me Randi Behen K Lode": "@veggie_me ki gand mai danda dalo sab",
+    "@veggie_me Chaddi Chor": "@veggie_me lund k tope",
+    "@veggie_me Chutiya Kamina": "@veggie_me randi k"
 }
 
 # Set up the reply keyboard
@@ -23,7 +23,7 @@ async def alive(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.message.text
     if text in LINKS:
-        await update.message.reply_text(f"Here is your link: {LINKS[text]}")
+        await update.message.reply_text(f"Sale : {LINKS[text]}")
 
 # Start command handler
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):

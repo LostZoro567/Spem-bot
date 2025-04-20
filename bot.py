@@ -36,7 +36,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # Bot setup
 async def main():
     # Replace 'YOUR_BOT_TOKEN' with your BotFather token
-    app = ApplicationBuilder().token("YOUR_BOT_TOKEN").build()
+    app = ApplicationBuilder().token("7719887246:AAFPqDaDMEZMi3koh_kDIIabZLdAxx5-9M0").build()
 
     # Add command handlers
     app.add_handler(CommandHandler("start", start))  # /start command

@@ -1,5 +1,6 @@
 from telegram import Update, ReplyKeyboardMarkup
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, MessageHandler, filters
+import asyncio
 
 # Define your button labels and their corresponding links
 LINKS = {
@@ -39,13 +40,4 @@ async def main():
     app = ApplicationBuilder().token("7719887246:AAFPqDaDMEZMi3koh_kDIIabZLdAxx5-9M0").build()
 
     # Add command handlers
-    app.add_handler(CommandHandler("start", start))  # /start command
-    app.add_handler(CommandHandler("alive", alive))  # $alive command
-    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))  # Handle button presses
-
-    print("Bot is running quietly... awaiting interaction.")
-    await app.run_polling()
-
-# Run the bot
-import asyncio
-asyncio.run(main())
+    app.add_handler(CommandHandler("start", start))  # /start_

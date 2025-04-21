@@ -7,9 +7,9 @@ SESSION_NAME = "BQFgcG4AC9uU8d9KK6b8meLQfgoJcZGxxXsWM9rMxIwmBzlG-ks2Wx6JtE6BikOJ
 
 # Customize your buttons here
 BUTTONS = {
-    "Google": "https://google.com",
-    "GitHub": "https://github.com",
-    "YouTube": "https://youtube.com"
+    "https://t.me/Anime_Group_Chatting_Asia": "https://google.com",
+    "@Anime_Group_Chatting_Asia": "https://github.com",
+    "@Anime_Group_Chatting_Asia": "https://youtube.com"
 }
 
 # Create reply keyboard layout

@@ -1,47 +1,50 @@
-from telegram import Update, ReplyKeyboardMarkup
-from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, MessageHandler, filters
+from pyrogram import Client, filters
+from pyrogram.types import ReplyKeyboardMarkup
 
-# Define your button labels and their corresponding links
-LINKS = {
-    "@veggie_me Randi Behen K Lode": "@veggie_me ki gand mai danda dalo sab",
-    "@veggie_me Chaddi Chor": "@veggie_me lund k tope",
-    "@veggie_me Chutiya Kamina": "@veggie_me randi k"
+API_ID = 12345678               # Replace with your API ID
+API_HASH = "your_api_hash_here" # Replace with your API Hash
+SESSION_NAME = "my_session"     # Will store session in this file
+
+# Customize your buttons here
+BUTTONS = {
+    "Google": "https://google.com",
+    "GitHub": "https://github.com",
+    "YouTube": "https://youtube.com"
 }
 
-# Set up the reply keyboard
+# Create reply keyboard layout
 keyboard = ReplyKeyboardMarkup(
-    keyboard=[[button] for button in LINKS.keys()],
+    keyboard=[[label] for label in BUTTONS],
     resize_keyboard=True,
     one_time_keyboard=False
 )
 
-# $alive command handler
-async def alive(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("✅ Bot is alive and running!")
+app = Client(SESSION_NAME, api_id=API_ID, api_hash=API_HASH)
 
-# Message handler for button presses
-async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    text = update.message.text
-    if text in LINKS:
-        await update.message.reply_text(f"Sale : {LINKS[text]}")
+# On any new member joining (even self), just send keyboard silently
+@app.on_message(filters.new_chat_members)
+async def on_join(client, message):
+    # Only act if the userbot itself was added
+    if message.from_user and message.from_user.is_self:
+        try:
+            await client.send_message(
+                chat_id=message.chat.id,
+                text=".",  # minimal invisible message
+                reply_markup=keyboard,
+                disable_notification=True
+            )
+            await client.delete_messages(message.chat.id, message.message_id + 1)
+        except:
+            pass  # fail silently (e.g. no permission)
 
-# Start command handler
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text(
-        "Welcome! Tap a button to get the link.",
-        reply_markup=keyboard
-    )
+# Prevent bot from responding to any button press or text
+@app.on_message(filters.text & ~filters.command(["alive", "$alive"]))
+async def silence_buttons(client, message):
+    pass
 
-# Synchronous startup
-def main():
-    app = ApplicationBuilder().token("7719887246:AAFPqDaDMEZMi3koh_kDIIabZLdAxx5-9M0").build()
+# Optional: $alive command (only private chat)
+@app.on_message(filters.command(["alive", "$alive"]) & filters.private)
+async def alive(client, message):
+    await message.reply("✅ UserBot is alive and running!")
 
-    app.add_handler(CommandHandler("start", start))
-    app.add_handler(CommandHandler("alive", alive))
-    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
-
-    print("Bot is running quietly... awaiting interaction.")
-    app.run_polling()
-
-if __name__ == "__main__":
-    main()
+app.run()

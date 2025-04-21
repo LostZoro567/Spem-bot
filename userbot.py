@@ -1,11 +1,10 @@
 from pyrogram import Client, filters
 from pyrogram.types import ReplyKeyboardMarkup
 
-api_id = 23097454     # replace with your api_id
+api_id = 23097454
 api_hash = "c244cdd380d02f0d51eca49df46db852"
 
-app = Client("user_session", api_id=..., api_hash=...)
-
+app = Client("user_session", api_id=api_id, api_hash=api_hash)
 
 keyboard = ReplyKeyboardMarkup(
     [["Hello"], ["Info"], ["Support"]],

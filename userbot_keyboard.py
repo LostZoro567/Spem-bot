@@ -1,27 +1,35 @@
-from telethon import TelegramClient, events, Button
+from telegram import Update, ReplyKeyboardMarkup
+from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, ContextTypes, filters
 
-api_id = 23097454
-api_hash = 'c244cdd380d02f0d51eca49df46db852'
-session_name = 'userbot_session'
+# Replace with your bot token
+BOT_TOKEN = 'YOUR_BOT_TOKEN_HERE'
 
-client = TelegramClient(session_name, api_id, api_hash)
+# Button label to link mapping
+BUTTON_LINKS = {
+    "Google": "https://www.google.com",
+    "YouTube": "https://www.youtube.com",
+    "GitHub": "https://github.com"
+}
 
-@client.on(events.NewMessage(outgoing=True, pattern=r'^\$start$'))
-async def start_command(event):
-    """
-    Triggered whenever *you* type exactly "$start" in any chat.
-    """
-    # build the inline keyboard
-    keyboard = Button.keyboard(
-        [
-            ['🔥 Hot Take', '❓ Ask a Question', '🎉 Celebrate!']
-        ],
-        resize=True
-    )
-    # reply in the same chat
-    await event.respond('Choose an action below:', buttons=keyboard)
+# Handler for /start command
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    keyboard = [[label] for label in BUTTON_LINKS.keys()]  # one button per row
+    reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
+    await update.message.reply_text("Choose an option to get the link:", reply_markup=reply_markup)
+
+# Handler for button press
+async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_text = update.message.text
+    if user_text in BUTTON_LINKS:
+        await update.message.reply_text(f"Here is your link: {BUTTON_LINKS[user_text]}")
+    else:
+        await update.message.reply_text("Please use the buttons below.")
 
 if __name__ == '__main__':
-    client.start()
-    print('Userbot is up and running…')
-    client.run_until_disconnected()
+    app = ApplicationBuilder().token(BOT_TOKEN).build()
+
+    app.add_handler(CommandHandler("start", start))
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
+
+    print("Bot is running...")
+    app.run_polling()

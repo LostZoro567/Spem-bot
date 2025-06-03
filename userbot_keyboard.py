@@ -2,7 +2,7 @@ from telegram import Update, ReplyKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, ContextTypes, filters
 
 # Replace with your bot token
-BOT_TOKEN = 'YOUR_BOT_TOKEN_HERE'
+BOT_TOKEN = '7291508738:AAGJyTaV0fU46019AtSumruHvPwpscp4lqM'
 
 # Button label to link mapping
 BUTTON_LINKS = {
